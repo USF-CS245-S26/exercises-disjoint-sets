@@ -95,4 +95,25 @@ public class Graph {
 
         return mst;
     }
+
+    /** Count the number of  connected components in the graph using disjoint sets */
+    public int countConnectedComponents() {
+        DisjointSets ds = new DisjointSets();
+        ds.createSets(graph.length); // each vertex is in its own set initially
+
+        int components = graph.length;
+        for (int i = 0; i < graph.length; i++) {
+            Edge curr = graph[i];
+
+            while (curr != null) {
+                // FILL IN CODE: check if i and neighbor j are in the same set?
+                // If not, merge the corresponding sets and decrement components
+
+                curr = curr.next; // move to the next neighbor
+            }
+
+        }
+
+        return components;
+    }
 }
