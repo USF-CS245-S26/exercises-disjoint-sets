@@ -27,8 +27,7 @@ public class DisjointSets {
             throw new IllegalArgumentException();
         // FILL IN CODE: go up the tree, until you reach the "root" of the tree (representative of the set)
 
-
-       return 0; // change
+        return x; // change
     }
 
     /**

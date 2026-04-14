@@ -7,31 +7,20 @@ import java.util.Collections;
 import java.util.List;
 
 public class Graph {
-    private Edge[] graph; // adjacency list
+    private WeightedEdge[] graph; // adjacency list
 
     // Edge node stored inside each linked list
-    public static class Edge {
-        private int neighbor;
+     private static class WeightedEdge implements Comparable<WeightedEdge> {
+        private int source; // origin vertex
+        private int neighbor; // destination vertex
         private int weight;
-        private Edge next;
+        private WeightedEdge next;
 
-        public Edge(int neighbor, int weight) {
+        public WeightedEdge(int source, int neighbor, int weight) {
+            this.source = source;
             this.neighbor = neighbor;
             this.weight = weight;
             this.next = null;
-        }
-    }
-
-    // helper class for Kruskal: one full edge (source, destination, weight)
-    private static class WeightedEdge implements Comparable<WeightedEdge> {
-        private int source;
-        private int dest;
-        private int weight;
-
-        public WeightedEdge(int source, int dest, int weight) {
-            this.source = source;
-            this.dest = dest;
-            this.weight = weight;
         }
 
         @Override
@@ -41,19 +30,19 @@ public class Graph {
 
         @Override
         public String toString() {
-            return "(" + source + ", " + dest + ", " + weight + ")";
+            return "(" + source + ", " + neighbor + ", " + weight + ")";
         }
     }
 
     public Graph(int numVertices) {
-        graph = new Edge[numVertices];
+        graph = new WeightedEdge[numVertices];
     }
 
     /**
      * Adds one directed edge node to the adjacency list of vertexId.
      */
-    public void addEdge(int vertexId, Edge edge) {
-        Edge head = graph[vertexId];
+    public void addEdge(int vertexId, WeightedEdge edge) {
+        WeightedEdge head = graph[vertexId];
         graph[vertexId] = edge;
         if (head != null) {
             edge.next = head;
@@ -64,8 +53,8 @@ public class Graph {
      * Adds an undirected weighted edge.
      */
     public void addUndirectedEdge(int v1, int v2, int weight) {
-        addEdge(v1, new Edge(v2, weight));
-        addEdge(v2, new Edge(v1, weight));
+        addEdge(v1, new WeightedEdge(v1, v2, weight));
+        addEdge(v2, new WeightedEdge(v2, v1, weight));
     }
 
     /**
@@ -77,7 +66,7 @@ public class Graph {
 
         // Collect all edges in the list (convert each Edge to WeightedEdge)
         for (int i = 0; i < graph.length; i++) {
-            Edge curr = graph[i];
+            WeightedEdge curr = graph[i];
             while (curr != null) {
                 if (i < curr.neighbor) {
                     allEdges.add(new WeightedEdge(i, curr.neighbor, curr.weight));
@@ -93,6 +82,7 @@ public class Graph {
         // FILL IN CODE: use DisjointSets to run Kruskal's and compute MST
 
 
+
         return mst;
     }
 
@@ -103,7 +93,7 @@ public class Graph {
 
         int components = graph.length;
         for (int i = 0; i < graph.length; i++) {
-            Edge curr = graph[i];
+            WeightedEdge curr = graph[i];
 
             while (curr != null) {
                 // FILL IN CODE: check if i and neighbor j are in the same set?
